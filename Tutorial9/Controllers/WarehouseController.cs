@@ -22,7 +22,7 @@ namespace Tutorial9.Controllers
     }
 
     [HttpPost]
-    public async Task<IActionResult> DoRequestAsync([FromBody] RequestDTO request)
+    public async Task<IActionResult> DoRequest([FromBody] RequestDTO request)
     {
 
       if (!ModelState.IsValid)
@@ -55,10 +55,10 @@ namespace Tutorial9.Controllers
       {
         return Conflict(new { error = ex.Message });
       }
-      // catch (Exception ex)
-      // {
-      //   return StatusCode(500, new { error = "Unexpected error", details = ex.Message });
-      // }
+      catch (Exception ex)
+      {
+        return StatusCode(500, new { error = "Unexpected error", details = ex.Message });
+      }
     }
     
     
