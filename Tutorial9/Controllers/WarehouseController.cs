@@ -33,7 +33,7 @@ namespace Tutorial9.Controllers
       try
       {
         var id = await _dbService.DoRequestAsync(request);
-        return Ok(new { id = id });
+        return Created(string.Empty, new { id = id });
       }
       catch (ProductNotFoundException ex)
       {
@@ -74,7 +74,7 @@ namespace Tutorial9.Controllers
       try
       {
         var id = await _dbService.DoRequestProcedureAsync(request);
-        return Ok(new { IdProductWarehouse = id });
+        return Created(string.Empty, new { IdProductWarehouse = id });
       }
       catch (SqlException ex)
       {
