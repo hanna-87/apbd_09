@@ -14,11 +14,11 @@ namespace Tutorial9.Controllers
   [ApiController]
   public class WarehouseController: ControllerBase
   {
-    private readonly IDbService _dbService;
+    private readonly IWarehouseService _warehouseService;
 
-    public WarehouseController(IDbService dbService)
+    public WarehouseController(IWarehouseService warehouseService)
     {
-      _dbService = dbService;
+      _warehouseService = warehouseService;
     }
 
     [HttpPost]
@@ -32,7 +32,7 @@ namespace Tutorial9.Controllers
 
       try
       {
-        var id = await _dbService.DoRequestAsync(request);
+        var id = await _warehouseService.DoRequestAsync(request);
         return Created(string.Empty, new { id = id });
       }
       catch (ProductNotFoundException ex)
@@ -73,7 +73,7 @@ namespace Tutorial9.Controllers
       }
       try
       {
-        var id = await _dbService.DoRequestProcedureAsync(request);
+        var id = await _warehouseService.DoRequestProcedureAsync(request);
         return Created(string.Empty, new { IdProductWarehouse = id });
       }
       catch (SqlException ex)
