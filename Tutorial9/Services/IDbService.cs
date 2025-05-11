@@ -3,8 +3,9 @@ using Tutorial9.Model;
 
 namespace Tutorial9.Services;
 
-public interface IWarehouseService
+public interface IDbService
 {
+    
     Task<int> DoRequestAsync(RequestDTO request);
     Task<int> DoRequestProcedureAsync(RequestDTO request);
 }

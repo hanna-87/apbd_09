@@ -7,14 +7,15 @@ using Tutorial9.Model;
 
 namespace Tutorial9.Services;
 
-public class WarehouseService : IWarehouseService
+public class DbService : IDbService
 {
     private readonly IConfiguration _configuration;
-    public WarehouseService(IConfiguration configuration)
+    public DbService(IConfiguration configuration)
     {
         _configuration = configuration;
     }
     
+  
 
     public async Task<int> DoRequestAsync(RequestDTO request)
     {
@@ -53,9 +54,9 @@ public class WarehouseService : IWarehouseService
             Console.WriteLine($"Incoming CreatedAt: {request.CreatedAt:O} (Kind: {request.CreatedAt.Kind})");
 
             command.Parameters.Clear();
-            command.CommandText = "SELECT IdOrder FROM [Order] WHERE IdProduct = @IdProduct and Amount = @Amount and CreatedAt < @CreatedAt";
+            command.CommandText = "SELECT IdOrder FROM [Order] WHERE IdProduct = @IdProduct and Amount = @Amount ";
             command.Parameters.AddWithValue("@IdProduct", request.IdProduct);
-            command.Parameters.AddWithValue("@CreatedAt", request.CreatedAt);
+
             command.Parameters.AddWithValue("@Amount", request.Amount);
             int idOrder;
             await using (var reader = await command.ExecuteReaderAsync())
@@ -63,6 +64,22 @@ public class WarehouseService : IWarehouseService
                  if (! await reader.ReadAsync())
                             {
                                 throw new OrderNotFoundException(request.IdProduct, request.Amount);
+                            }
+                 idOrder = reader.GetInt32(reader.GetOrdinal("IdOrder"));
+                  
+            }
+
+            command.Parameters.Clear();
+            command.CommandText = "SELECT IdOrder FROM [Order] WHERE IdProduct = @IdProduct and Amount = @Amount and CreatedAt < @CreatedAt";
+            command.Parameters.AddWithValue("@IdProduct", request.IdProduct);
+            command.Parameters.AddWithValue("@CreatedAt", request.CreatedAt);
+            command.Parameters.AddWithValue("@Amount", request.Amount);
+
+            await using (var reader = await command.ExecuteReaderAsync())
+            {
+                 if (! await reader.ReadAsync())
+                            {
+                                throw new     InvalidDateException() ;                                                               
                             }
                  idOrder = reader.GetInt32(reader.GetOrdinal("IdOrder"));
                   
